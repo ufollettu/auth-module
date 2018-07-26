@@ -4,19 +4,19 @@ const db = require("../models");
 
 class Repository {
   findAll() {
-    return db.utenti_permessi.findAll();
+    return db.utentiPermessi.findAll();
   }
 
   create(data) {
-    return db.utenti_permessi.create(data);
+    return db.utentiPermessi.create(data);
   }
 
   findOne(userId, permissionId) {
-    return db.utenti_permessi.findOne({ where: { UP_U_ID: userId, UP_P_ID: permissionId } });
+    return db.utentiPermessi.findOne({ where: { UP_U_ID: userId, UP_P_ID: permissionId } });
   }
 
   destroy(userId, permissionId) {
-    return db.permessi.destroy({ where: { UP_U_ID: userId, UP_P_ID: permissionId } })
+    return db.utentiPermessi.destroy({ where: { UP_U_ID: userId, UP_P_ID: permissionId } })
   }
 }
 

@@ -47,7 +47,7 @@ app.use('/api/', indexRouter);
 
 app.use('/api/utenti', utentiRouter);
 app.use('/api/permessi', permessiRouter);
-app.use('/api/utenti_permessi', utentiPermessiRouter);
+app.use('/api/utenti-permessi', utentiPermessiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

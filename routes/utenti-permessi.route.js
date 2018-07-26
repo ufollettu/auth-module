@@ -3,7 +3,7 @@ const router = express.Router();
 const verifyToken = require('../middleware').verifyToken;
 const userAuthorization = require('../middleware').userAuthorization;
 
-const UtentiPermessiController = require('./../controllers/utenti_permessi.controller');
+const UtentiPermessiController = require('./../controllers/utenti-permessi.controller');
 
 router.get('/', UtentiPermessiController.list); // Index
 

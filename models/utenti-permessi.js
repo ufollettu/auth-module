@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Permessi = sequelize.define('amt_premessi_utenti', {
+  var UtentiPermessi = sequelize.define('amt_permessi_utenti', {
+    UP_ID: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER(11)
+    },
     UP_U_ID: {
       type: DataTypes.INTEGER(11),
       allowNull: false
@@ -14,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     underscored: true,
     freezeTableName: true,
-    tableName: 'amt_premessi_utenti',
+    tableName: 'amt_permessi_utenti',
   });
-  Permessi.associate = function (models) {
+  UtentiPermessi.associate = function (models) {
     // associations can be defined here
   };
-  return Permessi;
+  return UtentiPermessi;
 };
