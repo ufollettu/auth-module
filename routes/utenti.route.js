@@ -5,11 +5,11 @@ const can = require('../middleware').can;
 
 const UtentiController = require('./../controllers/utenti.controller');
 
-router.get('/', verifyToken, can(3), UtentiController.list); // Index
+router.get('/', verifyToken, can(2), UtentiController.list); // Index
 
 router.post('/', verifyToken, UtentiController.create); // Create
-router.get('/:id', UtentiController.show); // Show one
-router.put('/:id', verifyToken, can(3), UtentiController.update); // Update
-router.delete('/:id', verifyToken, can(3), UtentiController.destroy); // Destroy
+router.get('/:id', verifyToken, can(3), UtentiController.show); // Show one
+router.put('/:id', UtentiController.update); // Update
+router.delete('/:id', UtentiController.destroy); // Destroy
 
 module.exports = router;

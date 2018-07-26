@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     UP_U_ID: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: true
     },
     UP_P_ID: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: true
     }
   }, {
     timestamps: false,
