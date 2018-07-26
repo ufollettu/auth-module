@@ -38,7 +38,9 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 // Import Models such that I can use them in the api just by importing 'db'
-// db.utenti = require('./utenti')(sequelize, Sequelize);
+db.utenti = require('./utenti')(sequelize, Sequelize);
+db.permessi = require('./permessi')(sequelize, Sequelize);
+db.utenti_permessi = require('./utenti-permessi')(sequelize, Sequelize);
 
 // Relations
 
