@@ -63,7 +63,7 @@ class UserAuth {
   }
 
   // return permission array
-  allow(id, perm) {
+  allow(id, perm, [customId, customPerm]) {
     const data = { userId: id, permissionId: perm };
     if (!id || !perm) {
       console.log("no input");
@@ -81,11 +81,18 @@ class UserAuth {
         }
       });
     }
-    return (this.keys = this.removeDuplicates(this.keys));
+    const uniqueKeys = this.removeDuplicates(this.keys);
+    const formattedKeys = uniqueKeys.map(obj => {
+      var rObj = {};
+      rObj[customId] = obj.userId;
+      rObj[customPerm] = obj.permissionId;
+      return rObj;
+    });
+    return (this.keys = formattedKeys);
   }
 
   // return permission array
-  disallow(id, perm) {
+  disallow(id, perm, [customId, customPerm]) {
     if (!id || !perm) {
       console.log("error");
     } else {
@@ -97,9 +104,17 @@ class UserAuth {
       }
       console.log(result);
     }
-    return (this.keys = this.removeDuplicates(this.keys));
+    const uniqueKeys = this.removeDuplicates(this.keys);
+    const formattedKeys = uniqueKeys.map(obj => {
+      var rObj = {};
+      rObj[customId] = obj.userId;
+      rObj[customPerm] = obj.permissionId;
+      return rObj;
+    });
+    return (this.keys = formattedKeys);
   }
 
+  // private
   removeDuplicates(arr) {
     const userIds = [];
     const result = arr.filter((element, index, array) => {

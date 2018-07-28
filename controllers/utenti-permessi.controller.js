@@ -26,21 +26,16 @@ const create = async (req, res) => {
         let auth = new UserAuth(resultKeys);
         let newKeys = auth.allow(
           parseInt(req.body.userId),
-          parseInt(req.body.permissionId)
+          parseInt(req.body.permissionId),
+          ['UP_U_ID','UP_P_ID']
         );
 
-        const formattedKeys = newKeys.map(obj => {
-          var rObj = {};
-          rObj.UP_U_ID = obj.userId;
-          rObj.UP_P_ID = obj.permissionId;
-          return rObj;
-        });
-        // console.log(formattedKeys);
+        // console.log(newKeys);
 
         repository
           .destroy()
           .then(affectedRows => {
-            return repository.bulkCreate(formattedKeys)
+            return repository.bulkCreate(newKeys)
             .then(newRows => {
               return res.json(newRows)
             });
@@ -69,21 +64,16 @@ const destroy = async (req, res) => {
       let auth = new UserAuth(resultKeys);
       let newKeys = auth.disallow(
         parseInt(req.body.userId),
-        parseInt(req.body.permissionId)
+        parseInt(req.body.permissionId),
+        ['UP_U_ID','UP_P_ID']
       );
 
-      const formattedKeys = newKeys.map(obj => {
-        var rObj = {};
-        rObj.UP_U_ID = obj.userId;
-        rObj.UP_P_ID = obj.permissionId;
-        return rObj;
-      });
-      // console.log(formattedKeys);
+      // console.log(newKeys);
 
       repository
         .destroy()
         .then(affectedRows => {
-          return repository.bulkCreate(formattedKeys)
+          return repository.bulkCreate(newKeys)
           .then(newRows => {
             return res.json(newRows)
           });
