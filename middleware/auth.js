@@ -69,10 +69,15 @@ class UserAuth {
       console.log("no input");
     } else {
       this.keys.forEach(key => {
-        if (id !== key.userId || perm === key.permissionId) {
-          console.log("id non esiste oppure permesso esiste");
+
+        if (id !== key.userId) {
+          console.log("id non esiste");
         } else {
-          this.keys.push(data);
+          if(perm === key.permissionId) {
+            console.log("permesso esiste in questo id");
+          } else {
+            this.keys.push(data);
+          }
         }
       });
     }
@@ -87,7 +92,10 @@ class UserAuth {
       const result = this.keys.findIndex(data => {
         return data.userId === id && data.permissionId === perm;
       });
-      this.keys.splice(result, 1);
+      if (result !== -1) {
+        this.keys.splice(result, 1);
+      }
+      console.log(result);
     }
     return (this.keys = this.removeDuplicates(this.keys));
   }

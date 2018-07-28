@@ -1,60 +1,98 @@
-const repository = require('../repositories/utenti-permessi.repo');
+const repository = require("../repositories/utenti-permessi.repo");
+const UserAuth = require("../middleware/auth").UserAuth;
 
 // List
 const list = async (req, res) => {
-    repository.findAll()
-        .then(result => {
-            res.json(result);
-        }).catch(err => res.send(err.errors));
+  repository
+    .findAll()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => res.send(err.errors));
 };
 module.exports.list = list;
 
 // Create
 const create = async (req, res) => {
-    const data = req.body;
-    repository.create(data).then((result) => {
-        res.json(result);
-    }).catch(err => res.send(err.errors));
 
+  repository
+    .findAll()
+    .then(keys => {
+      if (!keys) {
+        throw new Error("non autorizzato");
+      } else if (keys) {
+        let resultKeys = JSON.parse(JSON.stringify(keys));
+        // Sequelize is quite painful... here destroy table and bulkCreate every time...
+        let auth = new UserAuth(resultKeys);
+        let newKeys = auth.allow(
+          parseInt(req.body.userId),
+          parseInt(req.body.permissionId)
+        );
+
+        const formattedKeys = newKeys.map(obj => {
+          var rObj = {};
+          rObj.UP_U_ID = obj.userId;
+          rObj.UP_P_ID = obj.permissionId;
+          return rObj;
+        });
+        // console.log(formattedKeys);
+
+        repository
+          .destroy()
+          .then(affectedRows => {
+            return repository.bulkCreate(formattedKeys)
+            .then(newRows => {
+              return res.json(newRows)
+            });
+          })
+          .catch(err => res.send(err.errors));
+      }
+    })
+    .catch(err => {
+      res.status(401).send(err.message);
+    });
 };
 module.exports.create = create;
 
-// Show one
-const show = async (req, res) => {
-    // change input id and key source!!!  
-    const id = req.params.id;
-    const key = req.params.key;
-    repository.findOne(id, key)
-        .then(result => {
-            res.json(result);
-        }).catch(err => res.send(err.errors));
-};
-module.exports.show = show;
-
-// Update
-const update = async (req, res) => {
-    // change input id and key source!!!  
-    const id = req.params.id;
-    const key = req.params.key;
-
-    const newData = req.body;
-    repository.findOne(id, key)
-        .then(result => {
-            return result.update(newData).then((self) => {
-                res.json(self);
-            });
-        }).catch(err => res.send(err.errors));
-};
-module.exports.update = update;
 
 // Destroy
 const destroy = async (req, res) => {
-    // change input id and key source!!!  
-    const id = req.params.id;
-    const key = req.params.key;
-    repository.destroy(id, key)
-        .then(result => {
-            res.json(result);
-        }).catch(err => res.send(err.errors));
+
+  repository
+  .findAll()
+  .then(keys => {
+    if (!keys) {
+      throw new Error("non autorizzato");
+    } else if (keys) {
+      let resultKeys = JSON.parse(JSON.stringify(keys));
+      // Sequelize is quite painful... here destroy table and bulkCreate every time...
+      let auth = new UserAuth(resultKeys);
+      let newKeys = auth.disallow(
+        parseInt(req.body.userId),
+        parseInt(req.body.permissionId)
+      );
+
+      const formattedKeys = newKeys.map(obj => {
+        var rObj = {};
+        rObj.UP_U_ID = obj.userId;
+        rObj.UP_P_ID = obj.permissionId;
+        return rObj;
+      });
+      // console.log(formattedKeys);
+
+      repository
+        .destroy()
+        .then(affectedRows => {
+          return repository.bulkCreate(formattedKeys)
+          .then(newRows => {
+            return res.json(newRows)
+          });
+        })
+        .catch(err => res.send(err.errors));
+    }
+  })
+  .catch(err => {
+    res.status(401).send(err.message);
+  });
 };
 module.exports.destroy = destroy;
