@@ -4,7 +4,9 @@ const db = require("../models");
 
 class Repository {
   findAll() {
-    return db.utentiPermessi.findAll();
+    return db.utentiPermessi.findAll({
+      attributes: [['UP_U_ID', 'userId'], ['UP_P_ID', 'permissionId']]
+    });
   }
 
   create(data) {

@@ -40,76 +40,72 @@ const users = [
   }
 ];
 
-    const user_permission = require("../middleware/user_permission.json");
+const user_permission = require("../middleware/user_permission.json");
 
-    class UserAuth {
-      constructor(keys) {
-        this.keys = keys;
-      }
+class UserAuth {
+  constructor(keys) {
+    this.keys = keys;
+  }
 
-      // returning true if user have permission
-      can(id, perm) {
-        let auth = false;
-        if (!id || !perm) {
-          console.log("error");
-        } else {
-          this.keys.forEach(key => {
-            if (key.userId == id && key.permissionId == perm) {
-              auth = true;
-            }
-          });
+  // returning true if user have permission
+  can(id, perm) {
+    let auth = false;
+    if (!id || !perm) {
+      console.log("error");
+    } else {
+      this.keys.forEach(key => {
+        if (key.userId == id && key.permissionId == perm) {
+          auth = true;
         }
-        return auth;
-      }
-
-      // return permission array
-      allow(id, perm) {
-        const data = { userId: id, permissionId: perm };
-        if (!id || !perm) {
-          console.log("no input");
-        } else {
-          this.keys.forEach(key => {
-            if (id !== key.userId || perm === key.permissionId) {
-              console.log("id non esiste oppure permesso esiste");
-            } else {
-              this.keys.push(data);
-            }
-          });
-        }
-        return (this.keys = this.removeDuplicates(this.keys));
-      }
-
-      // return permission array
-      disallow(id, perm) {
-        if (!id || !perm) {
-          console.log("error");
-        } else {
-          const result = this.keys.findIndex(data => {
-            return data.userId === id && data.permissionId === perm;
-          });
-          this.keys.splice(result, 1);
-        }
-        return (this.keys = this.removeDuplicates(this.keys));
-      }
-
-      removeDuplicates(arr) {
-        const userIds = [];
-        const result = arr.filter((element, index, array) => {
-          var tempArr = element.userId + "" + element.permissionId;
-          if (userIds.indexOf(tempArr) === -1) {
-            userIds.push(tempArr);
-            return element;
-          }
-        });
-        result.sort((a, b) => {
-          return a.userId - b.userId;
-        });
-        return result
-      }
+      });
     }
+    return auth;
+  }
 
-    // const auth = new UserAuth(user_permission);
+  // return permission array
+  allow(id, perm) {
+    const data = { userId: id, permissionId: perm };
+    if (!id || !perm) {
+      console.log("no input");
+    } else {
+      this.keys.forEach(key => {
+        if (id !== key.userId || perm === key.permissionId) {
+          console.log("id non esiste oppure permesso esiste");
+        } else {
+          this.keys.push(data);
+        }
+      });
+    }
+    return (this.keys = this.removeDuplicates(this.keys));
+  }
 
-    module.exports.UserAuth = UserAuth;
-    // module.exports.auth = auth;
+  // return permission array
+  disallow(id, perm) {
+    if (!id || !perm) {
+      console.log("error");
+    } else {
+      const result = this.keys.findIndex(data => {
+        return data.userId === id && data.permissionId === perm;
+      });
+      this.keys.splice(result, 1);
+    }
+    return (this.keys = this.removeDuplicates(this.keys));
+  }
 
+  removeDuplicates(arr) {
+    const userIds = [];
+    const result = arr.filter((element, index, array) => {
+      var tempArr = element.userId + "" + element.permissionId;
+      if (userIds.indexOf(tempArr) === -1) {
+        userIds.push(tempArr);
+        return element;
+      }
+    });
+    result.sort((a, b) => {
+      return a.userId - b.userId;
+    });
+    return result;
+  }
+}
+
+module.exports.UserAuth = UserAuth;
