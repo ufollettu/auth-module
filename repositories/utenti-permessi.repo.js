@@ -17,8 +17,12 @@ class Repository {
     return db.utentiPermessi.findOne({ where: { UP_U_ID: userId, UP_P_ID: permissionId } });
   }
 
-  destroy(userId, permissionId) {
+  destroy() {
     return db.utentiPermessi.destroy({ where: {}, truncate: true })
+  }
+
+  destroyOne(key) {
+    return db.utentiPermessi.destroy({ where: key })
   }
 
   bulkCreate(data) {

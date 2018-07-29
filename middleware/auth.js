@@ -69,11 +69,10 @@ class UserAuth {
       console.log("no input");
     } else {
       this.keys.forEach(key => {
-
         if (id !== key.userId) {
           console.log("id non esiste");
         } else {
-          if(perm === key.permissionId) {
+          if (perm === key.permissionId) {
             console.log("permesso esiste in questo id");
           } else {
             this.keys.push(data);
@@ -89,6 +88,25 @@ class UserAuth {
       return rObj;
     });
     return (this.keys = formattedKeys);
+  }
+
+  // return single perm item
+  allowOne(id, perm, [customId, customPerm]) {
+    const data = { [customId]: id, [customPerm]: perm };
+    if (!id || !perm) {
+      console.log("no input");
+    } else {
+      return data;
+    }
+  }
+
+  disallowOne(id, perm, [customId, customPerm]) {
+    const data = { [customId]: id, [customPerm]: perm };
+    if (!id || !perm) {
+      console.log("no input");
+    } else {
+      return data;
+    }
   }
 
   // return permission array

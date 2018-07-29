@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
 function authCan(permissionId, userId) {
   return (req, res, next) => {
     userId = userId || req.userId || 0;
-    // call the db: here we using a repo with sequelize ORM
+    // call the db: here we using a repo with sequelize ORM (mapping in db call vedi repo...)
     users_permissions_repo.findAll().then(keys => {
         if (!keys) {
           throw new Error("non autorizzato");
