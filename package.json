@@ -1,6 +1,6 @@
 {
   "name": "auth_module",
-  "jest" : {
+  "jest": {
     "verbose": true,
     "testURL": "http://localhost/"
   },
@@ -27,6 +27,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "faker": "^4.1.0",
     "jest": "^23.4.2",
     "superagent": "^3.8.3",
     "supertest": "^3.1.0"
