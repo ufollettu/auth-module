@@ -17,11 +17,7 @@ class Repository {
     return db.utentiPermessi.findOne({ where: { UP_U_ID: userId, UP_P_ID: permissionId } });
   }
 
-  destroy() {
-    return db.utentiPermessi.destroy({ where: {}, truncate: true })
-  }
-
-  destroyOne(key) {
+  destroy(key) {
     return db.utentiPermessi.destroy({ where: key })
   }
 

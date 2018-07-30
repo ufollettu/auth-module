@@ -1,5 +1,9 @@
 {
   "name": "auth_module",
+  "jest" : {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
   "version": "1.0.0",
   "private": true,
   "description": "authorisation module for sql and node",
@@ -21,6 +25,10 @@
     "sequelize": "^4.38.0"
   },
   "devDependencies": {
-    "jest": "^23.4.1"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.4.2",
+    "superagent": "^3.8.3",
+    "supertest": "^3.1.0"
   }
 }

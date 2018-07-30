@@ -41,6 +41,7 @@ const users = [
 ];
 
 const user_permission = require("../middleware/user_permission.json");
+// console.log(user_permission);
 
 class UserAuth {
   constructor(keys) {
@@ -51,7 +52,7 @@ class UserAuth {
   can(id, perm) {
     let auth = false;
     if (!id || !perm) {
-      console.log("error");
+      throw new Error('no input fields');
     } else {
       this.keys.forEach(key => {
         if (key.userId == id && key.permissionId == perm) {
@@ -62,74 +63,21 @@ class UserAuth {
     return auth;
   }
 
-  // return permission array
-  allow(id, perm, [customId, customPerm]) {
-    const data = { userId: id, permissionId: perm };
-    if (!id || !perm) {
-      console.log("no input");
-    } else {
-      this.keys.forEach(key => {
-        if (id !== key.userId) {
-          console.log("id non esiste");
-        } else {
-          if (perm === key.permissionId) {
-            console.log("permesso esiste in questo id");
-          } else {
-            this.keys.push(data);
-          }
-        }
-      });
-    }
-    const uniqueKeys = this.removeDuplicates(this.keys);
-    const formattedKeys = uniqueKeys.map(obj => {
-      var rObj = {};
-      rObj[customId] = obj.userId;
-      rObj[customPerm] = obj.permissionId;
-      return rObj;
-    });
-    return (this.keys = formattedKeys);
-  }
-
   // return single perm item
-  allowOne(id, perm, [customId, customPerm]) {
-    const data = { [customId]: id, [customPerm]: perm };
+  allow(id, perm, [customId, customPerm] = ['userId', 'permissionId']) {
     if (!id || !perm) {
-      console.log("no input");
+      throw new Error('no input fields');
     } else {
-      return data;
+      return { [customId]: id, [customPerm]: perm };
     }
   }
 
-  disallowOne(id, perm, [customId, customPerm]) {
-    const data = { [customId]: id, [customPerm]: perm };
+  disallow(id, perm, [customId, customPerm] = ['userId', 'permissionId']) {
     if (!id || !perm) {
-      console.log("no input");
+      throw new Error('no input fields');
     } else {
-      return data;
+      return { [customId]: id, [customPerm]: perm };
     }
-  }
-
-  // return permission array
-  disallow(id, perm, [customId, customPerm]) {
-    if (!id || !perm) {
-      console.log("error");
-    } else {
-      const result = this.keys.findIndex(data => {
-        return data.userId === id && data.permissionId === perm;
-      });
-      if (result !== -1) {
-        this.keys.splice(result, 1);
-      }
-      console.log(result);
-    }
-    const uniqueKeys = this.removeDuplicates(this.keys);
-    const formattedKeys = uniqueKeys.map(obj => {
-      var rObj = {};
-      rObj[customId] = obj.userId;
-      rObj[customPerm] = obj.permissionId;
-      return rObj;
-    });
-    return (this.keys = formattedKeys);
   }
 
   // private
@@ -146,6 +94,18 @@ class UserAuth {
       return a.userId - b.userId;
     });
     return result;
+  }
+
+  // private
+  formatKeys(rawKeys, [customId, customPerm]) {
+    const uniqueKeys = this.removeDuplicates(rawKeys);
+    const formattedKeys = uniqueKeys.map(obj => {
+      var rObj = {};
+      rObj[customId] = obj.userId;
+      rObj[customPerm] = obj.permissionId;
+      return rObj;
+    });
+    return formattedKeys;
   }
 }
 

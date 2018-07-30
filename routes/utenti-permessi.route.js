@@ -8,8 +8,7 @@ const can = require('../middleware').authCan;
 const UtentiPermessiController = require('./../controllers/utenti-permessi.controller');
 
 router.get('/', verifyToken, can(1), UtentiPermessiController.list); // Index
-router.post('/', verifyToken, can(1), UtentiPermessiController.createOne); // Create
-// router.put('/:id', verifyToken, UtentiPermessiController.update); // Update
-router.delete('/', verifyToken, UtentiPermessiController.destroyOne); // Destroy
+router.post('/', verifyToken, can(1), UtentiPermessiController.create); // Create
+router.delete('/', verifyToken, UtentiPermessiController.destroy); // Destroy
 
 module.exports = router;
